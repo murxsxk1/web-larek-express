@@ -29,9 +29,10 @@ const productSchema = new mongoose.Schema<IProduct>({
     type: String,
     required: true,
     minlength: 2,
-    maxLength: 30,
+    maxlength: 30,
+    unique: true,
   },
-  image: imageSchema,
+  image: imageSchema, 
   category: {
     type: String,
     required: true,
@@ -45,4 +46,4 @@ const productSchema = new mongoose.Schema<IProduct>({
   }
 });
 
-export default mongoose.model<IProduct>('product', productSchema);
+export default mongoose.model<IProduct>('Product', productSchema);
