@@ -4,6 +4,7 @@ import path from 'path';
 import product from './routes/product';
 import order from './routes/order';
 import cors from 'cors';
+import { errors } from 'celebrate';
 
 const { PORT = 3000 } = process.env;
 
@@ -18,6 +19,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/weblarek')
 app.use('/product', product);
 app.use('/order', order)
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(errors())
 
 app.listen(PORT, () => {
   console.log(`Порт сервера: ${PORT}`);

@@ -1,8 +1,8 @@
 import Product from "../models/product";
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { faker } from "@faker-js/faker";
 
-export const createOrder = async (req: Request, res: Response) => {
+export const createOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { total, items } = req.body;
 
@@ -32,7 +32,6 @@ export const createOrder = async (req: Request, res: Response) => {
 
     res.status(200).json({ id: orderId, total: sum });
   } catch (error) {
-    console.error("Ошибка при создании заказа:", error);
-    res.status(500).json({ message: "Внутренняя ошибка сервера" });
+    next(error);
   }
 };
