@@ -1,4 +1,4 @@
-import { validateProduct } from "middlewares/validations";
+import { validateProduct } from "../middlewares/validations";
 import { createProduct, getProducts } from "../controllers/products";
 import express from "express";
 

@@ -1,7 +1,13 @@
+import BadRequestError from "../errors/bad-request-error";
+import ConflictError from "../errors/conflict-error";
 import Product from "../models/product";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
-export const getProducts = async (req: Request, res: Response) => {
+export const getProducts = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const products = await Product.find();
 
@@ -12,11 +18,11 @@ export const getProducts = async (req: Request, res: Response) => {
 
     res.status(200).json(response);
   } catch (error) {
-    res.status(500).json({ message: "Ошибка сервера при получении товаров" });
+    next(error);
   }
 };
 
-export const createProduct = async (req: Request, res: Response) => {
+export const createProduct = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { title, image, category, description, price } = req.body;
 
@@ -31,8 +37,13 @@ export const createProduct = async (req: Request, res: Response) => {
     const savedProduct = await newProduct.save();
 
     res.status(201).json(savedProduct);
-  } catch (error) {
-    console.error("Ошибка при создании товара:", error);
-    res.status(500).json({ message: "Ошибка сервера при создании товара", error });
+  } catch (error: any) {
+    if (error.name === 'ValidationError') {
+      return next(new BadRequestError(error.message));
+    }
+    if (error.code === 11000) {
+      return next(new ConflictError('Продукт с таким названием уже существует'));
+    }
+    next(error);
   }
 };

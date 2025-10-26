@@ -1,27 +1,34 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import path from 'path';
-import product from './routes/product';
-import order from './routes/order';
 import cors from 'cors';
 import { errors } from 'celebrate';
-
-const { PORT = 3000 } = process.env;
+import { errorLogger, requestLogger } from './middlewares/logger';
+import errorHandler from './middlewares/error-handler';
+import { config } from './config';
+import routes from './routes/index';
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect('mongodb://127.0.0.1:27017/weblarek')
+mongoose.connect(config.DB_ADDRESS)
   .then(() => console.log("MongoDB подключен"))
   .catch(err => console.error("MongoDB не подключен:", err));
 
-app.use('/product', product);
-app.use('/order', order)
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(errors())
+app.use(requestLogger);
 
-app.listen(PORT, () => {
-  console.log(`Порт сервера: ${PORT}`);
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(routes);
+
+app.use(errorLogger);
+
+app.use(errors());
+
+app.use(errorHandler);
+
+app.listen(config.PORT, () => {
+  console.log(`Порт сервера: ${config.PORT}`);
 });
 
