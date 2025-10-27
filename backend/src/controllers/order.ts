@@ -1,13 +1,13 @@
-import Product from "../models/product";
-import { Request, Response, NextFunction } from "express";
-import { faker } from "@faker-js/faker";
-import NotFoundError from "../errors/not-found-error";
-import BadRequestError from "../errors/bad-request-error";
+import { Request, Response, NextFunction } from 'express';
+import { faker } from '@faker-js/faker';
+import Product from '../models/product';
+import NotFoundError from '../errors/not-found-error';
+import BadRequestError from '../errors/bad-request-error';
 
-export const createOrder = async (
+const createOrder = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const { total, items } = req.body;
@@ -15,17 +15,17 @@ export const createOrder = async (
     const products = await Product.find({ _id: items });
 
     if (products.length !== items.length) {
-      throw new NotFoundError("Один или несколько товаров не найдены");
+      throw new NotFoundError('Один или несколько товаров не найдены');
     }
 
     if (products.some((product) => product.price == null)) {
-      throw new BadRequestError("Один или несколько товаров недоступны для заказа");
+      throw new BadRequestError('Один или несколько товаров недоступны для заказа');
     }
 
     const sum = products.reduce((acc, product) => acc + product.price!, 0);
 
     if (sum !== total) {
-      throw new BadRequestError("Сумма заказа не соответствует сумме товаров");
+      throw new BadRequestError('Сумма заказа не соответствует сумме товаров');
     }
 
     const orderId = faker.string.uuid();
@@ -35,3 +35,5 @@ export const createOrder = async (
     next(error);
   }
 };
+
+export default createOrder;

@@ -1,6 +1,6 @@
-import { validateProduct } from "../middlewares/validations";
-import { createProduct, getProducts } from "../controllers/products";
-import express from "express";
+import express from 'express';
+import { validateProduct } from '../middlewares/validations';
+import { createProduct, getProducts } from '../controllers/products';
 
 const router = express.Router();
 

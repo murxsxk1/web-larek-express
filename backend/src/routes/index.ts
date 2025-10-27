@@ -8,7 +8,7 @@ const router = express.Router();
 router.use('/product', productRouter);
 router.use('/order', orderRouter);
 
-router.use('*', (req, res, next) => {
+router.use('*', (_req, _res, next) => {
   next(new NotFoundError('Запрашиваемый ресурс не найден'));
 });
 

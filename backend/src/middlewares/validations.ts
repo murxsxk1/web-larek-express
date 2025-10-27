@@ -1,5 +1,4 @@
-import { ja } from "@faker-js/faker/.";
-import { celebrate, Joi, Segments } from "celebrate";
+import { celebrate, Joi, Segments } from 'celebrate';
 
 export const validateProduct = celebrate({
   [Segments.BODY]: Joi.object({
@@ -9,7 +8,7 @@ export const validateProduct = celebrate({
       originalName: Joi.string().required(),
     }).required(),
     category: Joi.string().required(),
-    description: Joi.string().allow(""),
+    description: Joi.string().allow(''),
     price: Joi.number().min(0).allow(null),
   }),
 });
@@ -18,7 +17,7 @@ export const validateOrder = celebrate({
   [Segments.BODY]: Joi.object({
     items: Joi.array().items(Joi.string().hex().length(24)).min(1).required(),
     total: Joi.number().min(0).required(),
-    payment: Joi.string().valid("card", "online").required(),
+    payment: Joi.string().valid('card', 'online').required(),
     email: Joi.string().pattern(/^.+@.+\..+$/).required(),
     phone: Joi.string().required(),
     address: Joi.string().required(),

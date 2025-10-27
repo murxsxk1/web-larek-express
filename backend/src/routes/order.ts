@@ -1,6 +1,6 @@
-import { validateOrder } from "../middlewares/validations";
-import { createOrder } from "../controllers/order";
-import express from "express";
+import express from 'express';
+import { validateOrder } from '../middlewares/validations';
+import createOrder from '../controllers/order';
 
 const router = express.Router();
 

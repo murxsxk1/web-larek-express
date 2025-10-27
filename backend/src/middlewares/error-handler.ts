@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from 'express';
 
 interface CustomError extends Error {
   statusCode?: number;
@@ -6,14 +6,14 @@ interface CustomError extends Error {
 
 const errorHandler = (
   err: CustomError,
-  req: Request,
+  _req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction,
 ) => {
   const { statusCode = 500, message } = err;
 
   res.status(statusCode).json({
-    message: statusCode === 500 ? "На сервере произошла ошибка" : message,
+    message: statusCode === 500 ? 'На сервере произошла ошибка' : message,
   });
 };
 

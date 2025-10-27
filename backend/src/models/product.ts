@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 interface IImage {
-  fileName: string; 
+  fileName: string;
   originalName: string;
 }
 
@@ -21,7 +21,7 @@ const imageSchema = new mongoose.Schema<IImage>({
   originalName: {
     type: String,
     required: true,
-  }
+  },
 });
 
 const productSchema = new mongoose.Schema<IProduct>({
@@ -32,7 +32,7 @@ const productSchema = new mongoose.Schema<IProduct>({
     maxlength: 30,
     unique: true,
   },
-  image: imageSchema, 
+  image: imageSchema,
   category: {
     type: String,
     required: true,
@@ -43,7 +43,7 @@ const productSchema = new mongoose.Schema<IProduct>({
   price: {
     type: Number,
     default: null,
-  }
+  },
 });
 
 export default mongoose.model<IProduct>('Product', productSchema);
