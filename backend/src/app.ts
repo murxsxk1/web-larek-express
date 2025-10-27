@@ -3,8 +3,7 @@ import mongoose from 'mongoose';
 import path from 'path';
 import cors from 'cors';
 import { errors } from 'celebrate';
-import winston from 'winston';
-import { errorLogger, requestLogger } from './middlewares/logger';
+import { errorLogger, requestLogger, logger } from './middlewares/logger';
 import errorHandler from './middlewares/error-handler';
 import config from './config';
 import routes from './routes/index';
@@ -16,10 +15,10 @@ app.use(express.json());
 mongoose
   .connect(config.DB_ADDRESS)
   .then(() => {
-    winston.info('MongoDB подключен');
+    logger.info('MongoDB подключен');
   })
   .catch((err) => {
-    winston.error(`MongoDB не подключен: ${err}`);
+    logger.error(`MongoDB не подключен: ${err}`);
   });
 
 app.use(requestLogger);
@@ -35,5 +34,5 @@ app.use(errors());
 app.use(errorHandler);
 
 app.listen(config.PORT, () => {
-  winston.info(`Порт сервера: ${config.PORT}`);
+  logger.info(`Порт сервера: ${config.PORT}`);
 });

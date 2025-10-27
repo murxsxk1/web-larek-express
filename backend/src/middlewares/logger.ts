@@ -14,3 +14,15 @@ export const errorLogger = expressWinston.errorLogger({
   ],
   format: winston.format.json(),
 });
+
+export const logger = winston.createLogger({
+  transports: [
+    new winston.transports.Console({
+      format: winston.format.simple(),
+    }),
+    new winston.transports.File({ 
+      filename: 'app.log',
+      format: winston.format.json(),
+    }),
+  ],
+});
